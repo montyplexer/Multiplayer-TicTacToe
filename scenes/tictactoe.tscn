@@ -1,0 +1,306 @@
+[gd_scene load_steps=11 format=3 uid="uid://btsfyr1pfjqqo"]
+
+[ext_resource type="Script" path="res://scripts/tictactoe.gd" id="1_bgwui"]
+[ext_resource type="Texture2D" uid="uid://be8orxy311cid" path="res://assets/tic-tac-toe grid 450 450.png" id="1_finjc"]
+[ext_resource type="Texture2D" uid="uid://k1toe3m1lsgh" path="res://assets/tic-tac-toe X.png" id="2_3i46w"]
+[ext_resource type="Theme" uid="uid://vi5t1tysmcik" path="res://style/ui_theme.tres" id="2_8lb4p"]
+[ext_resource type="ButtonGroup" uid="uid://vx0ch4wr45ci" path="res://style/GameModeButtonGroup.tres" id="3_ij2hq"]
+[ext_resource type="Texture2D" uid="uid://d0pqhfsubbnos" path="res://assets/tic-tac-toe O.png" id="3_v03ef"]
+[ext_resource type="PackedScene" uid="uid://cms4s20g8g7y6" path="res://scenes/tile.tscn" id="4_4phu3"]
+[ext_resource type="ButtonGroup" uid="uid://cofs3o3i8bq78" path="res://style/AIDifficultyButtonGroup.tres" id="4_5gmd5"]
+[ext_resource type="ButtonGroup" uid="uid://p5m3d8d3yqdm" path="res://style/MultiplayerModeButtonGroup.tres" id="5_sgdy3"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_357up"]
+size = Vector2(140, 140)
+
+[node name="TicTacToe" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bgwui")
+
+[node name="GameBackground" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+color = Color(0.117647, 0.117647, 0.117647, 1)
+
+[node name="VBoxTitleBar" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="TitleBarRect" type="ColorRect" parent="VBoxTitleBar"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+color = Color(0.117647, 0.117647, 0.117647, 1)
+
+[node name="TitleBarButtonContainer" type="HBoxContainer" parent="VBoxTitleBar/TitleBarRect"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="HBoxScoreAndGrid" type="HBoxContainer" parent="VBoxTitleBar"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="InfoRect" type="ColorRect" parent="VBoxTitleBar/HBoxScoreAndGrid"]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+color = Color(0.227451, 0.227451, 0.227451, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="InfoContainer" type="VBoxContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="ScoreContainer" type="HBoxContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="XScoreTitleLabel" type="Label" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/ScoreContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("2_8lb4p")
+text = "X:"
+
+[node name="XScoreLabel" type="Label" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/ScoreContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+theme_override_font_sizes/font_size = 20
+text = "0"
+
+[node name="OScoreTitleLabel" type="Label" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/ScoreContainer"]
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+text = "O:"
+
+[node name="OScoreLabel" type="Label" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/ScoreContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+theme_override_font_sizes/font_size = 20
+text = "0"
+
+[node name="TurnLabel" type="Label" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+text = "It is X's turn."
+horizontal_alignment = 1
+
+[node name="GameSettingsLabel" type="Label" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+text = "--Game Settings--
+Multiplayer
+Hot Seat"
+horizontal_alignment = 1
+
+[node name="NewGameButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+text = "New Game"
+
+[node name="SingleplayerButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+toggle_mode = true
+button_group = ExtResource("3_ij2hq")
+text = "Singleplayer"
+
+[node name="SingleplayerSettingsBox" type="HBoxContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AIDifficultyLabel" type="Label" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox"]
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+text = "AI:"
+
+[node name="AIEasyButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox"]
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+toggle_mode = true
+button_group = ExtResource("4_5gmd5")
+text = "Easy"
+
+[node name="AIMediumButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox"]
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+toggle_mode = true
+button_group = ExtResource("4_5gmd5")
+text = "Med"
+
+[node name="AIHardButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox"]
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+toggle_mode = true
+button_group = ExtResource("4_5gmd5")
+text = "Hard"
+
+[node name="MultiplayerButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+toggle_mode = true
+button_group = ExtResource("3_ij2hq")
+text = "Multiplayer"
+
+[node name="MultiplayerSettingsBox" type="HBoxContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="HotSeatButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/MultiplayerSettingsBox"]
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+toggle_mode = true
+button_group = ExtResource("5_sgdy3")
+text = "Hot Seat"
+
+[node name="OnlineButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/MultiplayerSettingsBox"]
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+toggle_mode = true
+button_group = ExtResource("5_sgdy3")
+text = "Online"
+
+[node name="OnlineSettingsBox" type="VBoxContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="IPLineEdit" type="LineEdit" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/OnlineSettingsBox"]
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+
+[node name="IPConnectButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/OnlineSettingsBox"]
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+text = "Connect"
+
+[node name="GridRect" type="ColorRect" parent="VBoxTitleBar/HBoxScoreAndGrid"]
+custom_minimum_size = Vector2(460, 460)
+layout_mode = 2
+size_flags_horizontal = 8
+color = Color(0.227451, 0.227451, 0.227451, 1)
+
+[node name="TTTBoard" type="Sprite2D" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect"]
+position = Vector2(240, 225)
+texture = ExtResource("1_finjc")
+
+[node name="GameBoard" type="CenterContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect"]
+custom_minimum_size = Vector2(450, 450)
+layout_mode = 2
+offset_right = 450.0
+offset_bottom = 450.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TTTGrid" type="GridContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect"]
+custom_minimum_size = Vector2(450, 450)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -225.0
+offset_top = -225.0
+offset_right = 225.0
+offset_bottom = 225.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 3
+
+[node name="Control" type="Control" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect/TTTGrid"]
+visible = false
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect/TTTGrid"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = SubResource("PlaceholderTexture2D_357up")
+texture_pressed = ExtResource("2_3i46w")
+texture_hover = ExtResource("3_v03ef")
+
+[node name="Tile1" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect/TTTGrid" instance=ExtResource("4_4phu3")]
+position = Vector2(81, 83)
+id = Vector2(0, 0)
+
+[node name="Tile2" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect/TTTGrid" instance=ExtResource("4_4phu3")]
+position = Vector2(225, 81)
+id = Vector2(1, 0)
+
+[node name="Tile3" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect/TTTGrid" instance=ExtResource("4_4phu3")]
+position = Vector2(369, 83)
+id = Vector2(2, 0)
+
+[node name="Tile4" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect/TTTGrid" instance=ExtResource("4_4phu3")]
+position = Vector2(78, 225)
+id = Vector2(0, 1)
+
+[node name="Tile5" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect/TTTGrid" instance=ExtResource("4_4phu3")]
+position = Vector2(225, 225)
+id = Vector2(1, 1)
+
+[node name="Tile6" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect/TTTGrid" instance=ExtResource("4_4phu3")]
+position = Vector2(372, 225)
+id = Vector2(2, 1)
+
+[node name="Tile7" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect/TTTGrid" instance=ExtResource("4_4phu3")]
+position = Vector2(82, 376)
+id = Vector2(0, 2)
+
+[node name="Tile8" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect/TTTGrid" instance=ExtResource("4_4phu3")]
+position = Vector2(226, 372)
+id = Vector2(1, 2)
+
+[node name="Tile9" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect/TTTGrid" instance=ExtResource("4_4phu3")]
+position = Vector2(373, 375)
+id = Vector2(2, 2)
+
+[connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerButton" to="." method="_on_singleplayer_button_pressed"]
+[connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox/AIEasyButton" to="." method="_on_ai_easy_button_pressed"]
+[connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox/AIMediumButton" to="." method="_on_ai_medium_button_pressed"]
+[connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox/AIHardButton" to="." method="_on_ai_hard_button_pressed"]
+[connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/MultiplayerButton" to="." method="_on_multiplayer_button_pressed"]
+[connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/MultiplayerSettingsBox/HotSeatButton" to="." method="_on_hot_seat_button_pressed"]
+[connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/MultiplayerSettingsBox/OnlineButton" to="." method="_on_online_button_pressed"]

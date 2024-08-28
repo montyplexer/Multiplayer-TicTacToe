@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=3 uid="uid://cms4s20g8g7y6"]
+
+[ext_resource type="Script" path="res://scripts/tile.gd" id="1_h78d4"]
+[ext_resource type="Texture2D" uid="uid://d0pqhfsubbnos" path="res://assets/tic-tac-toe O.png" id="1_rtp1k"]
+[ext_resource type="Texture2D" uid="uid://k1toe3m1lsgh" path="res://assets/tic-tac-toe X.png" id="2_of41w"]
+
+[node name="Tile" type="Node2D"]
+script = ExtResource("1_h78d4")
+
+[node name="O" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("1_rtp1k")
+
+[node name="X" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_of41w")
+
+[node name="ChoiceButton" type="Button" parent="."]
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="pressed" from="ChoiceButton" to="." method="_on_choice_button_pressed"]

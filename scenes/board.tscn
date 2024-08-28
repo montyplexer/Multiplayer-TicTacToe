@@ -1,0 +1,78 @@
+[gd_scene load_steps=2 format=3 uid="uid://cice7fefaj6ay"]
+
+[ext_resource type="Texture2D" uid="uid://be8orxy311cid" path="res://assets/tic-tac-toe grid 450 450.png" id="1_m7i37"]
+
+[node name="Board" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameBackground" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+color = Color(0.117647, 0.117647, 0.117647, 1)
+
+[node name="VBoxTitleBar" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="TitleBarRect" type="ColorRect" parent="VBoxTitleBar"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+color = Color(0.117647, 0.117647, 0.117647, 1)
+
+[node name="HBoxScoreAndGrid" type="HBoxContainer" parent="VBoxTitleBar"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="InfoRect" type="ColorRect" parent="VBoxTitleBar/HBoxScoreAndGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.227451, 0.227451, 0.227451, 1)
+
+[node name="GridRect" type="ColorRect" parent="VBoxTitleBar/HBoxScoreAndGrid"]
+custom_minimum_size = Vector2(460, 460)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.227451, 0.227451, 0.227451, 1)
+
+[node name="TTTBoard" type="Sprite2D" parent="."]
+position = Vector2(411, 249)
+texture = ExtResource("1_m7i37")
+
+[node name="GridContainer" type="GridContainer" parent="TTTBoard"]
+custom_minimum_size = Vector2(450, 450)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -245.0
+offset_top = -245.0
+offset_right = -205.0
+offset_bottom = -205.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 3
+
+[node name="TextureButton" type="TextureButton" parent="TTTBoard/GridContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
