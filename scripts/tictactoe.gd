@@ -122,6 +122,13 @@ func end_turn(tile_id: Vector2):
 	message = str("It is ",Global.ptos(Global.turn),"'s turn.")
 	ui_update_turn_label(message)
 	
+	# 
+	if Global.ptos(Global.turn) == Global.game_settings.your_piece:
+		Global.toggle_remaining_tiles_signal.emit(true)
+	else:
+		Global.toggle_remaining_tiles_signal.emit(false)
+		ai_make_move(ai_medium())
+	
 	# Debug
 	print(message)
 	print(grid_to_string())
@@ -205,12 +212,12 @@ func _on_ai_hard_button_pressed():
 	ui_update_settings()
 
 func _on_x_score_title_button_pressed():
-	Global.game_settings.player_piece = "X"
+	Global.game_settings.your_piece = "X"
 	Global.game_settings.opponent_piece = "O"
 	ui_update_settings()
 
 func _on_o_score_title_button_pressed():
-	Global.game_settings.player_piece = "0"
+	Global.game_settings.your_piece = "0"
 	Global.game_settings.opponent_piece = "X"
 	ui_update_settings()
 
@@ -219,7 +226,10 @@ func _on_o_score_title_button_pressed():
 # ----------
 
 func ai_make_move(ai_move: Vector2):
-	grid[ai_move.x][ai_move.y] = Global.game_settings.opponent_piece
+	await get_tree().create_timer(0.5).timeout
+	Global.tile_pressed_signal.emit(ai_move)
+	end_turn(ai_move)
+	#grid[ai_move.x][ai_move.y] = Global.game_settings.opponent_piece
 
 ## Choose a random tile
 func ai_easy():
@@ -232,7 +242,40 @@ func ai_easy():
 	return open_tiles[randi() % open_tiles.size()]
 
 func ai_medium():
-	pass
+	# Defend against player
+	for n in 3:
+		# Row-wise player victory imminent
+		if Global.game_settings.your_piece == grid[n][0] and grid[n][0] == grid[n][1] and grid[n][2] == ".":
+			return Vector2(n,2)
+		if Global.game_settings.your_piece == grid[n][0] and grid[n][0] == grid[n][2] and grid[n][1] == ".":
+			return Vector2(n,1)
+		if Global.game_settings.your_piece == grid[n][1] and grid[n][1] == grid[n][2] and grid[n][0] == ".":
+			return Vector2(n,0)
+		# Column-wise player victory imminent
+		if Global.game_settings.your_piece == grid[0][n] and grid[0][n] == grid[1][n] and grid[2][n] == ".":
+			return Vector2(2,n)
+		if Global.game_settings.your_piece == grid[0][n] and grid[0][n] == grid[2][n] and grid[1][n] == ".":
+			return Vector2(1,n)
+		if Global.game_settings.your_piece == grid[1][n] and grid[1][n] == grid[2][n] and grid[0][n] == ".":
+			return Vector2(0,n)
+	# Diagonal-wise player victory imminent
+	# D1
+	if Global.game_settings.your_piece == grid[0][0] and grid[0][0] == grid[1][1] and grid[2][2] == ".":
+		return Vector2(2,2)
+	if Global.game_settings.your_piece == grid[0][0] and grid[0][0] == grid[2][2] and grid[1][1] == ".":
+		return Vector2(1,1)
+	if Global.game_settings.your_piece == grid[1][1] and grid[1][1] == grid[2][2] and grid[0][0] == ".":
+		return Vector2(0,0)
+	# D2
+	if Global.game_settings.your_piece == grid[0][2] and grid[0][2] == grid[1][1] and grid[2][0] == ".":
+		return Vector2(2,0)
+	if Global.game_settings.your_piece == grid[0][2] and grid[0][2] == grid[2][0] and grid[1][1] == ".":
+		return Vector2(1,1)
+	if Global.game_settings.your_piece == grid[1][1] and grid[1][1] == grid[2][0] and grid[0][2] == ".":
+		return Vector2(0,2)
+	
+	# Attack
+	return ai_easy()
 
 func ai_hard():
 	pass

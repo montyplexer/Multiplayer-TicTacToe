@@ -18,13 +18,24 @@ func _ready():
 	reset_tile()
 	Global.end_game_signal.connect(disable_tile)
 	Global.new_game_signal.connect(reset_tile)
+	Global.tile_pressed_signal.connect(virtual_press)
+	Global.toggle_remaining_tiles_signal.connect(toggle_tile)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	pass
+func virtual_press(id: Vector2):
+	$ChoiceButton.visible = false
+	print("HERE ",str(id))
+	set_tile_sprite(Vector2(id))
+
+func toggle_tile(enable: bool):
+	if player == ".":
+		if enable == true: enable_tile()
+		else: disable_tile()
 
 func disable_tile():
 	$ChoiceButton.visible = false
+
+func enable_tile():
+	$ChoiceButton.visible = true
 
 func reset_tile():
 	$X.visible = false
@@ -49,10 +60,15 @@ func reset_tile():
 	print("Tile (",id.x,",",id.y,"): Ready!")
 
 func set_tile_sprite(tile_id: Vector2):
-	if Global.turn == Global.PLAYER.X and tile_id == id: $X.visible = true
-	if Global.turn == Global.PLAYER.O and tile_id == id: $O.visible = true
+	if Global.turn == Global.PLAYER.X and tile_id == id: 
+		$X.visible = true
+		player = "X"
+	if Global.turn == Global.PLAYER.O and tile_id == id: 
+		$O.visible = true
+		player = "0"
 
 func _on_choice_button_pressed():
 	$ChoiceButton.visible = false
+	print("HERE ",str(id))
 	set_tile_sprite(Vector2(id))
 	Global.end_turn_signal.emit(id)
