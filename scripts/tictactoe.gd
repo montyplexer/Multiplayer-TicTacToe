@@ -83,7 +83,7 @@ func end_turn(tile_id: Vector2):
 	# Check for win
 	if has_won(Global.ptos(Global.turn)):
 		# Updated score
-		Global.scores[Global.turn] += 1
+		Global.scores[Global.turn] += 10
 		Global.end_game_signal.emit()
 		
 		# Update UI Labels
@@ -97,8 +97,10 @@ func end_turn(tile_id: Vector2):
 		return
 	
 	# Check for a draw
-	print(str(is_draw()))
 	if is_draw():
+		# Updated score
+		Global.scores[Global.PLAYER.X] += 5
+		Global.scores[Global.PLAYER.O] += 5
 		Global.end_game_signal.emit()
 		
 		# Update UI Labels
