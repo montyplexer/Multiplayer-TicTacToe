@@ -9,6 +9,7 @@ signal toggle_remaining_tiles_signal(enable: bool)
 
 enum PLAYER { X, O }
 var turn: int = PLAYER.X
+var turn_num: int = 0
 var scores: Array = []
 
 var game_settings = GameSettings.new()

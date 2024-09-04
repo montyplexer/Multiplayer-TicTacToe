@@ -23,7 +23,7 @@ func _ready():
 
 func virtual_press(id: Vector2):
 	$ChoiceButton.visible = false
-	print("HERE ",str(id))
+	#print("HERE ",str(id))
 	set_tile_sprite(Vector2(id))
 
 func toggle_tile(enable: bool):
@@ -69,6 +69,6 @@ func set_tile_sprite(tile_id: Vector2):
 
 func _on_choice_button_pressed():
 	$ChoiceButton.visible = false
-	print("HERE ",str(id))
+	# print("HERE ",str(id))
 	set_tile_sprite(Vector2(id))
 	Global.end_turn_signal.emit(id)
