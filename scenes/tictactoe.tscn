@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://btsfyr1pfjqqo"]
+[gd_scene load_steps=13 format=3 uid="uid://btsfyr1pfjqqo"]
 
 [ext_resource type="Script" path="res://scripts/tictactoe.gd" id="1_bgwui"]
 [ext_resource type="Texture2D" uid="uid://be8orxy311cid" path="res://assets/tic-tac-toe grid 450 450.png" id="1_finjc"]
@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://cms4s20g8g7y6" path="res://scenes/tile.tscn" id="4_4phu3"]
 [ext_resource type="ButtonGroup" uid="uid://cofs3o3i8bq78" path="res://style/AIDifficultyButtonGroup.tres" id="4_5gmd5"]
 [ext_resource type="ButtonGroup" uid="uid://p5m3d8d3yqdm" path="res://style/MultiplayerModeButtonGroup.tres" id="5_sgdy3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rxjij"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_357up"]
 size = Vector2(140, 140)
@@ -70,9 +72,15 @@ size_flags_horizontal = 4
 color = Color(0.227451, 0.227451, 0.227451, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -84.5
+offset_right = 84.5
+offset_bottom = 280.0
+grow_horizontal = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 2
@@ -88,6 +96,7 @@ layout_mode = 2
 alignment = 1
 
 [node name="XScoreTitleButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/ScoreContainer"]
+custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("2_8lb4p")
@@ -116,6 +125,7 @@ theme_override_font_sizes/font_size = 20
 text = "0"
 
 [node name="OScoreTitleButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/ScoreContainer"]
+custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
 theme_override_font_sizes/font_size = 20
@@ -140,19 +150,26 @@ Hot Seat"
 horizontal_alignment = 1
 
 [node name="NewGameButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_rxjij")
 text = "New Game"
 
 [node name="SingleplayerButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
 toggle_mode = true
+button_pressed = true
 button_group = ExtResource("3_ij2hq")
 text = "Singleplayer"
 
 [node name="SingleplayerSettingsBox" type="HBoxContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
 [node name="AIDifficultyLabel" type="Label" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox"]
@@ -161,21 +178,27 @@ theme = ExtResource("2_8lb4p")
 text = "AI:"
 
 [node name="AIEasyButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox"]
-layout_mode = 2
-theme = ExtResource("2_8lb4p")
-toggle_mode = true
-button_group = ExtResource("4_5gmd5")
-text = "Easy"
-
-[node name="AIMediumButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 0)
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("4_5gmd5")
+text = "Easy"
+
+[node name="AIMediumButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+toggle_mode = true
+button_group = ExtResource("4_5gmd5")
 text = "Med"
 
 [node name="AIHardButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 0)
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
 toggle_mode = true
@@ -183,19 +206,23 @@ button_group = ExtResource("4_5gmd5")
 text = "Hard"
 
 [node name="MultiplayerButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
 toggle_mode = true
-button_pressed = true
 button_group = ExtResource("3_ij2hq")
 text = "Multiplayer"
 
 [node name="MultiplayerSettingsBox" type="HBoxContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 
 [node name="HotSeatButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/MultiplayerSettingsBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
 toggle_mode = true
@@ -204,6 +231,8 @@ button_group = ExtResource("5_sgdy3")
 text = "Hot Seat"
 
 [node name="OnlineButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/MultiplayerSettingsBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
 toggle_mode = true
@@ -215,10 +244,14 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="IPLineEdit" type="LineEdit" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/OnlineSettingsBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
 
 [node name="IPConnectButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/OnlineSettingsBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
 text = "Connect"
@@ -310,6 +343,37 @@ id = Vector2(1, 2)
 [node name="Tile9" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect/TTTGrid" instance=ExtResource("4_4phu3")]
 position = Vector2(373, 375)
 id = Vector2(2, 2)
+
+[node name="EndOfGameMargin" type="MarginContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="EndOfGameRect" type="ColorRect" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect/EndOfGameMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+color = Color(0, 0, 0, 0.270588)
+
+[node name="EndOfGameNewGameButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/GridRect/EndOfGameMargin/EndOfGameRect"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_8lb4p")
+theme_override_font_sizes/font_size = 20
+text = "New Game"
 
 [connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/ScoreContainer/XScoreTitleButton" to="." method="_on_x_score_title_button_pressed"]
 [connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/ScoreContainer/OScoreTitleButton" to="." method="_on_o_score_title_button_pressed"]

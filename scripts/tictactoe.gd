@@ -121,6 +121,7 @@ func end_turn(tile_id: Vector2):
 	elif Global.turn == Global.PLAYER.O: Global.turn = Global.PLAYER.X
 	else: Global.turn = Global.PLAYER.X
 	Global.turn_num += 1
+	toggle_settings_buttons(false)
 	
 	# Update UI Labels
 	message = str("It is ",Global.ptos(Global.turn),"'s turn.")
@@ -155,6 +156,7 @@ func ui_update_button_visiblity():
 	if Global.game_settings.game_mode == "Singleplayer":
 		%SingleplayerSettingsBox.show()
 		%MultiplayerSettingsBox.hide()
+		%OnlineSettingsBox.hide()
 	if Global.game_settings.game_mode == "Multiplayer":
 		%SingleplayerSettingsBox.hide()
 		%MultiplayerSettingsBox.show()
@@ -181,6 +183,19 @@ func ui_update_score_labels():
 func ui_update_turn_label(message: String):
 	%TurnLabel.text = message
 
+func toggle_settings_buttons(enable: bool):
+	# Singleplayer
+	%SingleplayerButton.disabled = not enable
+	%AIEasyButton.disabled = not enable
+	%AIMediumButton.disabled = not enable
+	%AIHardButton.disabled = not enable
+	# Multiplayer
+	%MultiplayerButton.disabled = not enable
+	%HotSeatButton.disabled = not enable
+	%OnlineButton.disabled = not enable
+	%IPLineEdit.editable = enable
+	%IPConnectButton.disabled = not enable
+
 # ----------------------
 # --- BUTTON SIGNALS ---
 # ----------------------
@@ -188,6 +203,7 @@ func ui_update_turn_label(message: String):
 # New Game Button
 func _on_new_game_button_pressed():
 	clear_board()
+	toggle_settings_buttons(true)
 	Global.new_game_signal.emit()
 
 # Gamemode Settings Buttons
@@ -236,8 +252,10 @@ func _on_o_score_title_button_pressed():
 # ----------
 
 func ai_make_move(ai_move: Vector2):
+	%NewGameButton.disabled = true
 	await get_tree().create_timer(0.5).timeout
 	Global.tile_pressed_signal.emit(ai_move)
+	%NewGameButton.disabled = false
 	end_turn(ai_move)
 
 ## Choose a random tile

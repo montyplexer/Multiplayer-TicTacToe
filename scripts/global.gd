@@ -15,11 +15,13 @@ var scores: Array = []
 var game_settings = GameSettings.new()
 
 class GameSettings:
-	var game_mode: String = "Multiplayer"
+	var game_mode: String = "Singleplayer"
 	var multiplayer_mode: String = "Hot Seat"
-	var ai_difficulty: String = "Medium"
+	var ai_difficulty: String = "Easy"
 	var your_piece: String = "X"
 	var opponent_piece: String = "O"
+
+func game_ongoing() -> bool: return (turn_num > 0)
 
 func _init():
 	for players in PLAYER:
