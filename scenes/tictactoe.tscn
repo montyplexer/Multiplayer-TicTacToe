@@ -175,6 +175,7 @@ layout_mode = 2
 [node name="AIDifficultyLabel" type="Label" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox"]
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
+theme_override_font_sizes/font_size = 12
 text = "AI:"
 
 [node name="AIEasyButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox"]
@@ -189,7 +190,7 @@ text = "Easy"
 
 [node name="AIMediumButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(36, 0)
+custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
 toggle_mode = true
