@@ -40,7 +40,11 @@ func enable_tile():
 func reset_tile():
 	$X.visible = false
 	$O.visible = false
-	$ChoiceButton.visible = (Global.game_settings.your_piece == Global.ptos(Global.turn))
+	if Global.game_settings.game_mode == "Singleplayer":
+		$ChoiceButton.visible = (Global.game_settings.your_piece == Global.ptos(Global.turn))
+	if Global.game_settings.game_mode == "Multiplayer":
+		if Global.game_settings.multiplayer_mode == "Hot Seat":
+			$ChoiceButton.visible = true
 	player = "."
 	
 	# Sprite variation

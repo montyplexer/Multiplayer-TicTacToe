@@ -75,6 +75,22 @@ func is_draw(grid: Array):
 				return false
 	return true
 
+func handle_ui_and_wrap_up(message: String):
+	# Wrap up game
+	Global.turn_num = 0
+	Global.end_game_signal.emit()
+	
+	# Enable Buttons
+	toggle_settings_buttons(true)
+	
+	# Update UI Labels
+	ui_update_score_labels()
+	ui_update_turn_label(message)
+	
+	# Debug
+	print(message)
+	print(grid_to_string())
+
 # Handle end of turn logic
 func end_turn(tile_id: Vector2):
 	var message: String
@@ -86,17 +102,8 @@ func end_turn(tile_id: Vector2):
 	if has_won(Global.ptos(Global.turn),grid):
 		# Updated score
 		Global.scores[Global.turn] += 10
-		Global.turn_num = 0
-		Global.end_game_signal.emit()
-		
-		# Update UI Labels
-		ui_update_score_labels()
 		message = str(Global.ptos(Global.turn)," won!")
-		ui_update_turn_label(message)
-		
-		# Debug
-		print(message)
-		print(grid_to_string())
+		handle_ui_and_wrap_up(message)
 		return
 	
 	# Check for a draw
@@ -104,17 +111,8 @@ func end_turn(tile_id: Vector2):
 		# Updated score
 		Global.scores[Global.PLAYER.X] += 5
 		Global.scores[Global.PLAYER.O] += 5
-		Global.turn_num = 0
-		Global.end_game_signal.emit()
-		
-		# Update UI Labels
-		ui_update_score_labels()
 		message = "It's a draw!"
-		ui_update_turn_label(message)
-		
-		# Debug
-		print(message)
-		print(grid_to_string())
+		handle_ui_and_wrap_up(message)
 		return
 	
 	# Move to next person's turn
@@ -132,18 +130,31 @@ func end_turn(tile_id: Vector2):
 	if Global.ptos(Global.turn) == Global.game_settings.your_piece:
 		Global.toggle_remaining_tiles_signal.emit(true)
 	else:
-		Global.toggle_remaining_tiles_signal.emit(false)
-		if Global.game_settings.ai_difficulty == "Easy":
-			ai_make_move(ai_easy())
-		if Global.game_settings.ai_difficulty == "Medium":
-			ai_make_move(ai_medium())
-		if Global.game_settings.ai_difficulty == "Hard":
-			ai_make_move(ai_hard())
+		if Global.game_settings.game_mode == "Singleplayer":
+			Global.toggle_remaining_tiles_signal.emit(false)
+			if Global.game_settings.ai_difficulty == "Easy":
+				ai_make_move(ai_easy())
+			if Global.game_settings.ai_difficulty == "Medium":
+				ai_make_move(ai_medium())
+			if Global.game_settings.ai_difficulty == "Hard":
+				ai_make_move(ai_hard())
+		elif Global.game_settings.game_mode == "Multiplayer":
+			if Global.game_settings.multiplayer_mode == "Hot Seat":
+				pass
+			if Global.game_settings.multiplayer_mode == "Online":
+				online_wait()
 	
 	# Debug
 	print("Turn Num: ",Global.turn_num)
 	print(message)
 	print(grid_to_string())
+
+# ------------------
+# --- NETWORKING ---
+# ------------------
+
+func online_wait():
+	pass
 
 # ------------------
 # --- UI UPDATES ---
@@ -206,13 +217,22 @@ func toggle_settings_buttons(enable: bool):
 func _on_new_game_button_pressed():
 	clear_board()
 	toggle_settings_buttons(true)
-	Global.turn = Global.PLAYER.X
+	
+	Global.new_game_signal.emit()
+	if Global.game_settings.game_mode == "Singleplayer":
+		Global.turn = Global.PLAYER.X
+		# If AI goes first, make them go first
+		if Global.game_settings.opponent_piece == Global.ptos(Global.turn): 
+			toggle_settings_buttons(false)
+			ai_make_move(ai_easy())
+	if Global.game_settings.game_mode == "Multiplayer":
+		if Global.game_settings.multiplayer_mode == "Hot Seat":
+			if Global.game_settings.your_piece == "X": Global.turn = Global.PLAYER.X
+			if Global.game_settings.your_piece == "O": Global.turn = Global.PLAYER.O
+	
 	# Update UI Labels
 	var message = str("It is ",Global.ptos(Global.turn),"'s turn.")
 	ui_update_turn_label(message)
-	Global.new_game_signal.emit()
-	# If AI goes first, make them go first
-	if Global.game_settings.opponent_piece == Global.ptos(Global.turn): ai_make_move(ai_easy())
 
 # (Gamemode Settings Buttons)
 
@@ -273,11 +293,16 @@ func _on_o_score_title_button_pressed():
 
 ## The function representing the AI's turn
 func ai_make_move(ai_move: Vector2):
-	%NewGameButton.disabled = true
+	ai_toggle_buttons(false)
 	await get_tree().create_timer(0.75).timeout
 	Global.tile_pressed_signal.emit(ai_move)
-	%NewGameButton.disabled = false
+	ai_toggle_buttons(true)
 	end_turn(ai_move)
+
+func ai_toggle_buttons(enable: bool):
+	%NewGameButton.disabled = not enable
+	%XScoreTitleButton.disabled = not enable
+	%OScoreTitleButton.disabled = not enable
 
 ## Choose a random tile
 func ai_easy():
