@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://btsfyr1pfjqqo"]
+[gd_scene load_steps=14 format=3 uid="uid://btsfyr1pfjqqo"]
 
 [ext_resource type="Script" path="res://scripts/tictactoe.gd" id="1_bgwui"]
 [ext_resource type="Texture2D" uid="uid://be8orxy311cid" path="res://assets/tic-tac-toe grid 450 450.png" id="1_finjc"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cms4s20g8g7y6" path="res://scenes/tile.tscn" id="4_4phu3"]
 [ext_resource type="ButtonGroup" uid="uid://cofs3o3i8bq78" path="res://style/AIDifficultyButtonGroup.tres" id="4_5gmd5"]
 [ext_resource type="ButtonGroup" uid="uid://p5m3d8d3yqdm" path="res://style/MultiplayerModeButtonGroup.tres" id="5_sgdy3"]
+[ext_resource type="AudioStream" uid="uid://b0r1eiv5s3fe8" path="res://assets/audio/tic-tac-toe_beets-type-beet.mp3" id="11_qe24u"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rxjij"]
 
@@ -375,6 +376,11 @@ grow_vertical = 2
 theme = ExtResource("2_8lb4p")
 theme_override_font_sizes/font_size = 20
 text = "New Game"
+
+[node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("11_qe24u")
+volume_db = -20.0
 
 [connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/ScoreContainer/XScoreTitleButton" to="." method="_on_x_score_title_button_pressed"]
 [connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/ScoreContainer/OScoreTitleButton" to="." method="_on_o_score_title_button_pressed"]

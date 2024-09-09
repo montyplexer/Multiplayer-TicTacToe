@@ -40,7 +40,7 @@ func enable_tile():
 func reset_tile():
 	$X.visible = false
 	$O.visible = false
-	$ChoiceButton.visible = true
+	$ChoiceButton.visible = (Global.game_settings.your_piece == Global.ptos(Global.turn))
 	player = "."
 	
 	# Sprite variation
@@ -62,10 +62,12 @@ func reset_tile():
 func set_tile_sprite(tile_id: Vector2):
 	if Global.turn == Global.PLAYER.X and tile_id == id: 
 		$X.visible = true
+		$AudioMarkingX.play()
 		player = "X"
 	if Global.turn == Global.PLAYER.O and tile_id == id: 
 		$O.visible = true
-		player = "0"
+		$AudioMarkingO.play()
+		player = "O"
 
 func _on_choice_button_pressed():
 	$ChoiceButton.visible = false

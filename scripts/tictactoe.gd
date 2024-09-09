@@ -18,6 +18,7 @@ func _ready():
 		grid.append([])
 		for c in cols:
 			grid[r].append(".")
+	%BackgroundMusicPlayer.play()
 
 func clear_board():
 	Global.turn_num = 0
@@ -200,22 +201,33 @@ func toggle_settings_buttons(enable: bool):
 # --- BUTTON SIGNALS ---
 # ----------------------
 
-# New Game Button
+# (New Game Button)
+
 func _on_new_game_button_pressed():
 	clear_board()
 	toggle_settings_buttons(true)
+	Global.turn = Global.PLAYER.X
+	# Update UI Labels
+	var message = str("It is ",Global.ptos(Global.turn),"'s turn.")
+	ui_update_turn_label(message)
 	Global.new_game_signal.emit()
+	# If AI goes first, make them go first
+	if Global.game_settings.opponent_piece == Global.ptos(Global.turn): ai_make_move(ai_easy())
 
-# Gamemode Settings Buttons
+# (Gamemode Settings Buttons)
+
 func _on_singleplayer_button_pressed():
 	Global.game_settings.game_mode = "Singleplayer"
 	ui_update_settings()
+	_on_new_game_button_pressed()
 
 func _on_multiplayer_button_pressed():
 	Global.game_settings.game_mode = "Multiplayer"
 	ui_update_settings()
+	_on_new_game_button_pressed()
 
-# Multiplayer Settings Buttons
+# (Multiplayer Settings Buttons)
+
 func _on_hot_seat_button_pressed():
 	Global.game_settings.multiplayer_mode = "Hot Seat"
 	ui_update_settings()
@@ -224,7 +236,8 @@ func _on_online_button_pressed():
 	Global.game_settings.multiplayer_mode = "Online"
 	ui_update_settings()
 
-# Singleplayer Settings Buttons
+# (Singleplayer Settings Buttons)
+
 func _on_ai_easy_button_pressed():
 	Global.game_settings.ai_difficulty = "Easy"
 	ui_update_settings()
@@ -237,23 +250,31 @@ func _on_ai_hard_button_pressed():
 	Global.game_settings.ai_difficulty = "Hard"
 	ui_update_settings()
 
+# (Change Who's Turn It Is Buttons)
+
 func _on_x_score_title_button_pressed():
 	Global.game_settings.your_piece = "X"
 	Global.game_settings.opponent_piece = "O"
+	ui_update_turn_label("Now playing as X.")
 	ui_update_settings()
+	_on_new_game_button_pressed()
+	
 
 func _on_o_score_title_button_pressed():
-	Global.game_settings.your_piece = "0"
+	Global.game_settings.your_piece = "O"
 	Global.game_settings.opponent_piece = "X"
+	ui_update_turn_label("Now playing as O.")
 	ui_update_settings()
+	_on_new_game_button_pressed()
 
 # ----------
 # --- AI ---
 # ----------
 
+## The function representing the AI's turn
 func ai_make_move(ai_move: Vector2):
 	%NewGameButton.disabled = true
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(0.75).timeout
 	Global.tile_pressed_signal.emit(ai_move)
 	%NewGameButton.disabled = false
 	end_turn(ai_move)
@@ -263,6 +284,7 @@ func ai_easy():
 	var open_tiles: Array = available_moves(grid)
 	return open_tiles[randi() % open_tiles.size()]
 
+## Defend against player attacks only. Otherwise choose a random tile.
 func ai_medium():
 	# Defend against player
 	var move = imminent_victory(Global.game_settings.your_piece, grid)
@@ -270,6 +292,24 @@ func ai_medium():
 	# Attack (randomly)
 	return ai_easy()
 
+## Actively try to win the game. Only defend if there is no imminent AI victory.
+func ai_hard():
+	if Global.turn_num == 1:
+		if grid[1][1] == ".":
+			return Vector2(1,1)
+		var corners = available_corners()
+		return corners[randi() % corners.size()]
+	if Global.turn_num == 3:
+		if grid[1][1] == Global.game_settings.opponent_piece:
+			if Global.game_settings.your_piece == grid[0][0] and grid[0][0] == grid[2][2]:
+				var edges = available_edges()
+				return edges[randi() % edges.size()]
+	var next_move = imminent_victory(Global.game_settings.opponent_piece, grid)
+	if next_move != Vector2(-1,-1): return next_move
+	return ai_medium()
+
+## A board with an imminent victory is one where a player, on their next turn, wins the game.
+## Returns true if the board has an imminent victory for the player specified.
 func imminent_victory(piece: String, grid: Array):
 	for n in 3:
 		# Row-wise player victory imminent
@@ -303,14 +343,7 @@ func imminent_victory(piece: String, grid: Array):
 		return Vector2(0,2)
 	return Vector2(-1,-1)
 
-func deep_copy_2D(original: Array):
-	var new_vector: Array = []
-	for r in original.size():
-		new_vector.append([])
-		for c in original[r].size():
-			new_vector[r].append(original[r][c])
-	return new_vector
-
+## Returns list of board corner tiles that are unclaimed.
 func available_corners():
 	var corners = []
 	if grid[0][0] == ".": corners.append(Vector2(0,0))
@@ -319,6 +352,7 @@ func available_corners():
 	if grid[2][0] == ".": corners.append(Vector2(2,0))
 	return corners
 
+## Returns list of board edge tiles that are unclaimed.
 func available_edges():
 	var edges = []
 	if grid[0][1] == ".": edges.append(Vector2(0,1))
@@ -327,55 +361,7 @@ func available_edges():
 	if grid[2][1] == ".": edges.append(Vector2(2,1))
 	return edges
 
-func ai_hard():
-	if Global.turn_num == 1:
-		if grid[1][1] == ".":
-			return Vector2(1,1)
-		var corners = available_corners()
-		return corners[randi() % corners.size()]
-	if Global.turn_num == 3:
-		if grid[1][1] == Global.game_settings.opponent_piece:
-			if Global.game_settings.your_piece == grid[0][0] and grid[0][0] == grid[2][2]:
-				var edges = available_edges()
-				return edges[randi() % edges.size()]
-	var next_move = imminent_victory(Global.game_settings.opponent_piece, grid)
-	if next_move != Vector2(-1,-1): return next_move
-	return ai_medium()
-	
-	
-	# Attempt at Minimax (very inefficient, brute force)
-	var best_val: int = -INF
-	var best_move: Vector2
-	var potential_state: Array = deep_copy_2D(grid)
-	var moves = available_moves(grid)
-	
-	print("Available Moves: ",moves)
-	
-	for move in moves:
-		potential_state[move.x][move.y] = Global.game_settings.opponent_piece
-		var move_val = minimax(deep_copy_2D(potential_state),0,false)
-		potential_state[move.x][move.y] = "."
-		
-		if move_val > best_val:
-			best_move = move
-			best_val = move_val
-	
-	print("AI HARD BEST MOVE: ",best_move)
-	return best_move
-
-func score(game_state: Array):
-	# If AI won, return +10
-	if has_won(Global.game_settings.opponent_piece,game_state):
-		return +10
-	# If player won, return 0
-	elif has_won(Global.game_settings.your_piece,game_state):
-		return -10
-	# If draw, return +5
-	elif is_draw(game_state):
-		return 0
-	else: 
-		return 0
-
+## Returns list of all unclaimed board tiles.
 func available_moves(game_state: Array):
 	var open_tiles: Array = []
 	for r in rows:
@@ -384,36 +370,15 @@ func available_moves(game_state: Array):
 				open_tiles.append(Vector2(r,c))
 	return open_tiles
 
-func minimax(game_state: Array, depth: int, is_ai_turn: bool):
-	
-	# Base Case: If game is over, return the score for the AI (win, draw, or loss)
-	if score(game_state): return score(game_state)
-	
-	if depth > 2: return 0
-	
-	# Recursive Case
-	var open_tiles = available_moves(game_state)
-	
-	if is_ai_turn:
-		var best_val = -INF
-		for move in open_tiles:
-			var new_state = deep_copy_2D(game_state)
-			new_state[move.x][move.y] = Global.game_settings.opponent_piece
-			print("New Call: ",is_ai_turn," ",depth," ",new_state)
-			var val = minimax(new_state,depth+1,false)
-			print("VAL MAX: ",val)
-			best_val = max(best_val,val)
-		return best_val
-	else:
-		var best_val = +INF
-		for move in open_tiles:
-			var new_state = deep_copy_2D(game_state)
-			print("DEEP COPY: ",new_state)
-			new_state[move.x][move.y] = Global.game_settings.your_piece
-			var val = minimax(new_state,depth+1,true)
-			print("VAL MIN: ",val)
-			best_val = min(best_val,val)
-		return best_val
+# ---------------
+# --- Utility ---
+# ---------------
 
-
-
+## Creates a deep copy of a 2D array.
+func deep_copy_2D(original: Array):
+	var new_vector: Array = []
+	for r in original.size():
+		new_vector.append([])
+		for c in original[r].size():
+			new_vector[r].append(original[r][c])
+	return new_vector
