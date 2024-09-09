@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://btsfyr1pfjqqo"]
+[gd_scene load_steps=15 format=3 uid="uid://btsfyr1pfjqqo"]
 
 [ext_resource type="Script" path="res://scripts/tictactoe.gd" id="1_bgwui"]
 [ext_resource type="Texture2D" uid="uid://be8orxy311cid" path="res://assets/tic-tac-toe grid 450 450.png" id="1_finjc"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://d0pqhfsubbnos" path="res://assets/tic-tac-toe O.png" id="3_v03ef"]
 [ext_resource type="PackedScene" uid="uid://cms4s20g8g7y6" path="res://scenes/tile.tscn" id="4_4phu3"]
 [ext_resource type="ButtonGroup" uid="uid://cofs3o3i8bq78" path="res://style/AIDifficultyButtonGroup.tres" id="4_5gmd5"]
+[ext_resource type="Script" path="res://scripts/audio_button.gd" id="4_rqr7n"]
 [ext_resource type="ButtonGroup" uid="uid://p5m3d8d3yqdm" path="res://style/MultiplayerModeButtonGroup.tres" id="5_sgdy3"]
 [ext_resource type="AudioStream" uid="uid://b0r1eiv5s3fe8" path="res://assets/audio/tic-tac-toe_beets-type-beet.mp3" id="11_qe24u"]
 
@@ -107,6 +108,7 @@ toggle_mode = true
 button_pressed = true
 button_group = ExtResource("3_at2ph")
 text = "X"
+script = ExtResource("4_rqr7n")
 
 [node name="XScoreLabel" type="Label" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/ScoreContainer"]
 unique_name_in_owner = true
@@ -135,6 +137,7 @@ theme_override_font_sizes/font_size = 20
 toggle_mode = true
 button_group = ExtResource("3_at2ph")
 text = "O"
+script = ExtResource("4_rqr7n")
 
 [node name="TurnLabel" type="Label" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
 unique_name_in_owner = true
@@ -159,6 +162,7 @@ layout_mode = 2
 theme = ExtResource("2_8lb4p")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_rxjij")
 text = "New Game"
+script = ExtResource("4_rqr7n")
 
 [node name="SingleplayerButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
 unique_name_in_owner = true
@@ -169,6 +173,7 @@ toggle_mode = true
 button_pressed = true
 button_group = ExtResource("3_ij2hq")
 text = "Singleplayer"
+script = ExtResource("4_rqr7n")
 
 [node name="SingleplayerSettingsBox" type="HBoxContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
 unique_name_in_owner = true
@@ -190,6 +195,7 @@ toggle_mode = true
 button_pressed = true
 button_group = ExtResource("4_5gmd5")
 text = "Easy"
+script = ExtResource("4_rqr7n")
 
 [node name="AIMediumButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox"]
 unique_name_in_owner = true
@@ -199,6 +205,7 @@ theme = ExtResource("2_8lb4p")
 toggle_mode = true
 button_group = ExtResource("4_5gmd5")
 text = "Med"
+script = ExtResource("4_rqr7n")
 
 [node name="AIHardButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/SingleplayerSettingsBox"]
 unique_name_in_owner = true
@@ -208,6 +215,7 @@ theme = ExtResource("2_8lb4p")
 toggle_mode = true
 button_group = ExtResource("4_5gmd5")
 text = "Hard"
+script = ExtResource("4_rqr7n")
 
 [node name="MultiplayerButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
 unique_name_in_owner = true
@@ -217,6 +225,7 @@ theme = ExtResource("2_8lb4p")
 toggle_mode = true
 button_group = ExtResource("3_ij2hq")
 text = "Multiplayer"
+script = ExtResource("4_rqr7n")
 
 [node name="MultiplayerSettingsBox" type="HBoxContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
 unique_name_in_owner = true
@@ -233,6 +242,7 @@ toggle_mode = true
 button_pressed = true
 button_group = ExtResource("5_sgdy3")
 text = "Hot Seat"
+script = ExtResource("4_rqr7n")
 
 [node name="OnlineButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/MultiplayerSettingsBox"]
 unique_name_in_owner = true
@@ -242,6 +252,7 @@ theme = ExtResource("2_8lb4p")
 toggle_mode = true
 button_group = ExtResource("5_sgdy3")
 text = "Online"
+script = ExtResource("4_rqr7n")
 
 [node name="OnlineSettingsBox" type="VBoxContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer"]
 unique_name_in_owner = true
@@ -259,6 +270,7 @@ custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
 text = "Connect"
+script = ExtResource("4_rqr7n")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect"]
 layout_mode = 1
@@ -275,12 +287,14 @@ layout_mode = 2
 theme = ExtResource("2_8lb4p")
 toggle_mode = true
 text = "BGM"
+script = ExtResource("4_rqr7n")
 
 [node name="SoundButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/HBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
 toggle_mode = true
 text = "SFX"
+script = ExtResource("4_rqr7n")
 
 [node name="GridRect" type="ColorRect" parent="VBoxTitleBar/HBoxScoreAndGrid"]
 custom_minimum_size = Vector2(460, 460)

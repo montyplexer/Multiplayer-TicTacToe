@@ -219,14 +219,15 @@ func _on_new_game_button_pressed():
 	clear_board()
 	toggle_settings_buttons(true)
 	
-	Global.new_game_signal.emit()
 	if Global.game_settings.game_mode == "Singleplayer":
 		Global.turn = Global.PLAYER.X
+		Global.new_game_signal.emit()
 		# If AI goes first, make them go first
 		if Global.game_settings.opponent_piece == Global.ptos(Global.turn): 
 			toggle_settings_buttons(false)
 			ai_make_move(ai_easy())
 	if Global.game_settings.game_mode == "Multiplayer":
+		Global.new_game_signal.emit()
 		if Global.game_settings.multiplayer_mode == "Hot Seat":
 			if Global.game_settings.your_piece == "X": Global.turn = Global.PLAYER.X
 			if Global.game_settings.your_piece == "O": Global.turn = Global.PLAYER.O
