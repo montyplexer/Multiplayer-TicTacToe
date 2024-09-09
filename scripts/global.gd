@@ -7,6 +7,8 @@ signal new_game_signal()
 signal tile_pressed_signal(tile_id: Vector2)
 signal toggle_remaining_tiles_signal(enable: bool)
 
+var board = null
+
 enum PLAYER { X, O }
 var turn: int = PLAYER.X
 var turn_num: int = 0

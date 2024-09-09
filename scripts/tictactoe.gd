@@ -11,6 +11,7 @@ var cols: int = 3
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Global.board = self
 	randomize()
 	ui_update_settings()
 	Global.end_turn_signal.connect(end_turn)
@@ -75,22 +76,6 @@ func is_draw(grid: Array):
 				return false
 	return true
 
-func handle_ui_and_wrap_up(message: String):
-	# Wrap up game
-	Global.turn_num = 0
-	Global.end_game_signal.emit()
-	
-	# Enable Buttons
-	toggle_settings_buttons(true)
-	
-	# Update UI Labels
-	ui_update_score_labels()
-	ui_update_turn_label(message)
-	
-	# Debug
-	print(message)
-	print(grid_to_string())
-
 # Handle end of turn logic
 func end_turn(tile_id: Vector2):
 	var message: String
@@ -146,6 +131,22 @@ func end_turn(tile_id: Vector2):
 	
 	# Debug
 	print("Turn Num: ",Global.turn_num)
+	print(message)
+	print(grid_to_string())
+
+func handle_ui_and_wrap_up(message: String):
+	# Wrap up game
+	Global.turn_num = 0
+	Global.end_game_signal.emit()
+	
+	# Enable Buttons
+	toggle_settings_buttons(true)
+	
+	# Update UI Labels
+	ui_update_score_labels()
+	ui_update_turn_label(message)
+	
+	# Debug
 	print(message)
 	print(grid_to_string())
 

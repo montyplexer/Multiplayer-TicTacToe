@@ -260,6 +260,28 @@ layout_mode = 2
 theme = ExtResource("2_8lb4p")
 text = "Connect"
 
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MusicButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+toggle_mode = true
+text = "BGM"
+
+[node name="SoundButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+toggle_mode = true
+text = "SFX"
+
 [node name="GridRect" type="ColorRect" parent="VBoxTitleBar/HBoxScoreAndGrid"]
 custom_minimum_size = Vector2(460, 460)
 layout_mode = 2
