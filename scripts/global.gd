@@ -9,6 +9,9 @@ signal toggle_remaining_tiles_signal(enable: bool)
 
 var board = null
 
+var bgm = true
+var sfx = true
+
 enum PLAYER { X, O }
 var turn: int = PLAYER.X
 var turn_num: int = 0

@@ -37,10 +37,12 @@ grow_vertical = 2
 unique_name_in_owner = true
 stream = ExtResource("4_5l5ap")
 volume_db = -9.0
+bus = &"SFX"
 
 [node name="AudioMarkingX" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
 stream = ExtResource("5_op0ko")
 volume_db = -9.0
+bus = &"SFX"
 
 [connection signal="pressed" from="ChoiceButton" to="." method="_on_choice_button_pressed"]

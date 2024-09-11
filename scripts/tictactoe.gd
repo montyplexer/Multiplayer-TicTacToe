@@ -19,6 +19,7 @@ func _ready():
 		grid.append([])
 		for c in cols:
 			grid[r].append(".")
+	%BackgroundMusicPlayer.bus = &"BGM"
 	%BackgroundMusicPlayer.play()
 
 func clear_board():
@@ -280,7 +281,6 @@ func _on_x_score_title_button_pressed():
 	ui_update_turn_label("Now playing as X.")
 	ui_update_settings()
 	_on_new_game_button_pressed()
-	
 
 func _on_o_score_title_button_pressed():
 	Global.game_settings.your_piece = "O"
@@ -288,6 +288,26 @@ func _on_o_score_title_button_pressed():
 	ui_update_turn_label("Now playing as O.")
 	ui_update_settings()
 	_on_new_game_button_pressed()
+
+func _on_music_button_pressed():
+	var bgm_channel = AudioServer.get_bus_index(&"BGM")
+	var bgm_channel_volume = AudioServer.get_bus_volume_db(bgm_channel)
+	if Global.bgm:
+		Global.bgm = false
+		AudioServer.set_bus_volume_db(bgm_channel,-80)
+	else:
+		Global.bgm = true
+		AudioServer.set_bus_volume_db(bgm_channel,0)
+
+func _on_sound_button_pressed():
+	var sfx_channel = AudioServer.get_bus_index(&"SFX")
+	var sfx_channel_volume = AudioServer.get_bus_volume_db(sfx_channel)
+	if Global.sfx:
+		Global.sfx = false
+		AudioServer.set_bus_volume_db(sfx_channel,-80)
+	else:
+		Global.sfx = true
+		AudioServer.set_bus_volume_db(sfx_channel,0)
 
 # ----------
 # --- AI ---

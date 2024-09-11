@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://btsfyr1pfjqqo"]
+[gd_scene load_steps=22 format=3 uid="uid://btsfyr1pfjqqo"]
 
 [ext_resource type="Script" path="res://scripts/tictactoe.gd" id="1_bgwui"]
 [ext_resource type="Texture2D" uid="uid://be8orxy311cid" path="res://assets/tic-tac-toe grid 450 450.png" id="1_finjc"]
@@ -11,9 +11,18 @@
 [ext_resource type="ButtonGroup" uid="uid://cofs3o3i8bq78" path="res://style/AIDifficultyButtonGroup.tres" id="4_5gmd5"]
 [ext_resource type="Script" path="res://scripts/audio_button.gd" id="4_rqr7n"]
 [ext_resource type="ButtonGroup" uid="uid://p5m3d8d3yqdm" path="res://style/MultiplayerModeButtonGroup.tres" id="5_sgdy3"]
+[ext_resource type="Texture2D" uid="uid://dliva5nt2656y" path="res://assets/ui/ui_bgm_on.png" id="8_yb3ma"]
+[ext_resource type="Script" path="res://scripts/audio_button_with_icon.gd" id="9_6ic10"]
+[ext_resource type="Texture2D" uid="uid://donf78soyix73" path="res://assets/ui/ui_sfx_on.png" id="9_302yj"]
+[ext_resource type="Texture2D" uid="uid://vi43bhoigjqx" path="res://assets/ui/ui_bgm_off.png" id="10_vm5t3"]
 [ext_resource type="AudioStream" uid="uid://b0r1eiv5s3fe8" path="res://assets/audio/tic-tac-toe_beets-type-beet.mp3" id="11_qe24u"]
+[ext_resource type="Texture2D" uid="uid://bo18v31tcbt7d" path="res://assets/ui/ui_sfx_off.png" id="12_kqtcb"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rxjij"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ykm2v"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_43rl8"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_357up"]
 size = Vector2(140, 140)
@@ -272,29 +281,59 @@ theme = ExtResource("2_8lb4p")
 text = "Connect"
 script = ExtResource("4_rqr7n")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect"]
+[node name="AudioButtonMargin" type="MarginContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect"]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -12.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 2
 
-[node name="MusicButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/HBoxContainer"]
+[node name="AudioButtonContainer" type="HBoxContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/AudioButtonMargin"]
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
-toggle_mode = true
+theme_override_constants/separation = 6
+
+[node name="MarginMusic" type="MarginContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/AudioButtonMargin/AudioButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 2
+
+[node name="MusicButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/AudioButtonMargin/AudioButtonContainer/MarginMusic"]
+layout_mode = 2
+theme = ExtResource("2_8lb4p")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ykm2v")
 text = "BGM"
-script = ExtResource("4_rqr7n")
+icon = ExtResource("8_yb3ma")
+script = ExtResource("9_6ic10")
+icon_on = ExtResource("8_yb3ma")
+icon_off = ExtResource("10_vm5t3")
 
-[node name="SoundButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/HBoxContainer"]
+[node name="MarginSound" type="MarginContainer" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/AudioButtonMargin/AudioButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 2
+
+[node name="SoundButton" type="Button" parent="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/AudioButtonMargin/AudioButtonContainer/MarginSound"]
 layout_mode = 2
 theme = ExtResource("2_8lb4p")
-toggle_mode = true
+theme_override_styles/focus = SubResource("StyleBoxEmpty_43rl8")
 text = "SFX"
-script = ExtResource("4_rqr7n")
+icon = ExtResource("9_302yj")
+script = ExtResource("9_6ic10")
+icon_on = ExtResource("9_302yj")
+icon_off = ExtResource("12_kqtcb")
 
 [node name="GridRect" type="ColorRect" parent="VBoxTitleBar/HBoxScoreAndGrid"]
 custom_minimum_size = Vector2(460, 460)
@@ -430,3 +469,5 @@ volume_db = -20.0
 [connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/MultiplayerButton" to="." method="_on_multiplayer_button_pressed"]
 [connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/MultiplayerSettingsBox/HotSeatButton" to="." method="_on_hot_seat_button_pressed"]
 [connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/MarginContainer/InfoContainer/MultiplayerSettingsBox/OnlineButton" to="." method="_on_online_button_pressed"]
+[connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/AudioButtonMargin/AudioButtonContainer/MarginMusic/MusicButton" to="." method="_on_music_button_pressed"]
+[connection signal="pressed" from="VBoxTitleBar/HBoxScoreAndGrid/InfoRect/AudioButtonMargin/AudioButtonContainer/MarginSound/SoundButton" to="." method="_on_sound_button_pressed"]

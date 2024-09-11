@@ -20,6 +20,8 @@ func _ready():
 	Global.new_game_signal.connect(reset_tile)
 	Global.tile_pressed_signal.connect(virtual_press)
 	Global.toggle_remaining_tiles_signal.connect(toggle_tile)
+	$AudioMarkingX.bus = &"SFX"
+	$AudioMarkingO.bus = &"SFX"
 
 func virtual_press(id: Vector2):
 	$ChoiceButton.visible = false

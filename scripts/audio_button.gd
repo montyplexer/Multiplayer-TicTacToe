@@ -6,6 +6,7 @@ var audio_player = null
 
 func _ready():
 	audio_player = AudioStreamPlayer.new()
+	audio_player.bus = &"SFX"
 	audio_player.volume_db = -3
 	add_child(audio_player)
 	self.connect("pressed", play_button_sound)
