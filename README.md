@@ -3,6 +3,7 @@
 
 ## Overview
 This is a tic-tac-toe game made with the Godot game engine.
+The purpose of this project is for it to be a proof of concept for future turn-based game projects.
 
 ## Features
 
