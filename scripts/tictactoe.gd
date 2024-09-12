@@ -309,6 +309,12 @@ func _on_sound_button_pressed():
 		Global.sfx = true
 		AudioServer.set_bus_volume_db(sfx_channel,0)
 
+func _on_reset_score_button_pressed():
+	Global.scores[Global.PLAYER.X] = 0 
+	Global.scores[Global.PLAYER.O] = 0
+	ui_update_score_labels()
+	_on_new_game_button_pressed()
+
 # ----------
 # --- AI ---
 # ----------
