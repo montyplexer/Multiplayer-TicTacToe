@@ -1,9 +1,13 @@
 class_name TicTacToe
 extends Control
 
+# Grid
 var grid: Array = []
 var rows: int = 3
 var cols: int = 3
+
+# Online Multiplayer
+var peer
 
 # ------------------------
 # --- START-UP & RESET ---
@@ -152,13 +156,6 @@ func handle_ui_and_wrap_up(message: String):
 	print(grid_to_string())
 
 # ------------------
-# --- NETWORKING ---
-# ------------------
-
-func online_wait():
-	pass
-
-# ------------------
 # --- UI UPDATES ---
 # ------------------
 
@@ -178,6 +175,10 @@ func ui_update_button_visiblity():
 			%OnlineSettingsBox.hide()
 		if Global.game_settings.multiplayer_mode == "Online":
 			%OnlineSettingsBox.show()
+			if Global.game_settings.connection_status == "Connected":
+				%IPConnectButton.text = "Disconnect"
+			else:
+				%IPConnectButton.text = "Connect"
 
 func ui_update_game_settings_label():
 	var message = "--Game Settings--"
@@ -187,6 +188,11 @@ func ui_update_game_settings_label():
 		message += "\n" + Global.game_settings.ai_difficulty
 	if Global.game_settings.game_mode == "Multiplayer":
 		message += "\n" + Global.game_settings.multiplayer_mode
+		if Global.game_settings.multiplayer_mode == "Online":
+			if Global.game_settings.connection_status == "Connected":
+				message += "\n" + Global.game_settings.p2p_ip
+			else:
+				message += "\n" + Global.game_settings.connection_status
 	
 	%GameSettingsLabel.text = message
 
@@ -259,6 +265,21 @@ func _on_online_button_pressed():
 	Global.game_settings.multiplayer_mode = "Online"
 	ui_update_settings()
 
+func _on_ip_connect_button_pressed():
+	# Disconnect from peer
+	if not %IPConnectButton.button_pressed:
+		multiplayer.multiplayer_peer = null
+		Global.game_settings.connection_status = "Not Connected"
+		ui_update_settings()
+	# Connect to peer
+	else:
+		Global.game_settings.p2p_ip = %IPLineEdit.text.strip_edges()
+		if Global.game_settings.p2p_ip != "":
+			create_peer(Global.game_settings.p2p_ip)
+		
+		Global.game_settings.connection_status = "Connected"
+		ui_update_settings()
+
 # (Singleplayer Settings Buttons)
 
 func _on_ai_easy_button_pressed():
@@ -314,6 +335,26 @@ func _on_reset_score_button_pressed():
 	Global.scores[Global.PLAYER.O] = 0
 	ui_update_score_labels()
 	_on_new_game_button_pressed()
+
+# ------------------
+# --- NETWORKING ---
+# ------------------
+
+func create_peer(ip: String):
+	peer = ENetMultiplayerPeer.new()
+	
+	# Try to create server
+	if peer.create_server(7474) == OK:
+		print("Hosting server on port 7474.")
+		multiplayer.multiplayer_peer = peer
+	elif peer.create_client(ip,7474) == OK:
+		print("Connected to server (",Global.game_settings.p2p_ip,").")
+		multiplayer.multiplayer_peer = peer
+	else:
+		print("Failed to connect to server!")
+
+func online_wait():
+	pass
 
 # ----------
 # --- AI ---

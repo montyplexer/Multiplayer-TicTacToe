@@ -25,6 +25,10 @@ class GameSettings:
 	var ai_difficulty: String = "Easy"
 	var your_piece: String = "X"
 	var opponent_piece: String = "O"
+	
+	# Online Play
+	var p2p_ip: String = ""
+	var connection_status: String = "Not Connected"
 
 func game_ongoing() -> bool: return (turn_num > 0)
 
